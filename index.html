@@ -536,8 +536,6 @@
             right: 0;
             bottom: 1.25rem;
             z-index: 3;
-            border-top: 1px solid rgba(245, 245, 245, 0.12);
-            border-bottom: 1px solid rgba(245, 245, 245, 0.12);
             background: rgba(0, 0, 0, 0.32);
             backdrop-filter: blur(10px);
         }
@@ -591,15 +589,16 @@
             white-space: nowrap;
             padding: 0;
             opacity: 0.86;
-            background: rgba(245, 245, 245, 0.9);
-            border: 1px solid rgba(245, 245, 245, 0.16);
+            background: rgba(198, 255, 0, 0.08);
+            border: 1px solid rgba(198, 255, 0, 0.18);
             transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
         }
 
         .website-marquee-item:hover {
             opacity: 1;
             transform: translateY(-1px);
-            background: rgba(245, 245, 245, 0.98);
+            background: rgba(198, 255, 0, 0.14);
+            border-color: rgba(198, 255, 0, 0.36);
         }
 
         .toolkit-mark {
@@ -616,7 +615,7 @@
             height: 46px;
             display: block;
             object-fit: contain;
-            filter: grayscale(1) contrast(1.05);
+            filter: grayscale(1) brightness(1.18) contrast(1.08);
         }
 
         .toolkit-logo-icon {
@@ -626,7 +625,7 @@
         }
 
         .semrush-logo {
-            filter: grayscale(1) contrast(1.05);
+            filter: grayscale(1) brightness(1.18) contrast(1.08);
         }
 
         @keyframes websiteMarquee {
