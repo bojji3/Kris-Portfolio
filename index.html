@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
     <title>KRISTINA VISAYA - Frontend & Website Design Portfolio</title>
     <!-- GSAP -->
@@ -205,7 +207,7 @@
             top: 0;
             right: 0;
             width: min(88vw, 420px);
-            height: 100vh;
+            height: 100dvh;
             padding: 1.25rem 1.25rem 1.5rem;
             background:
                 linear-gradient(180deg, rgba(198, 255, 0, 0.08), transparent 28%),
@@ -217,7 +219,7 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            overflow-y: auto;
+            overflow: hidden;
         }
 
         body.drawer-open .drawer-backdrop {
@@ -302,6 +304,16 @@
             gap: 0.85rem;
         }
 
+        .drawer-body {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+            padding-right: 0.15rem;
+        }
+
         .drawer-nav-link,
         .drawer-dropdown-toggle {
             width: 100%;
@@ -376,12 +388,12 @@
         }
 
         .drawer-footer {
-            margin-top: auto;
             padding-top: 1.25rem;
             border-top: 1px solid rgba(198, 255, 0, 0.18);
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            flex: 0 0 auto;
         }
 
         .drawer-contact {
@@ -404,26 +416,26 @@
             font-size: 0.95rem;
         }
 
-        .language-toggle {
+        .drawer-social-link {
+            width: 100%;
+            min-height: 48px;
             display: inline-flex;
-            align-self: flex-start;
-            border: 1px solid rgba(198, 255, 0, 0.2);
-        }
-
-        .language-toggle button {
-            border: 0;
-            background: transparent;
-            color: rgba(245, 245, 245, 0.7);
-            padding: 0.7rem 0.95rem;
-            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: #F5F5F5;
+            text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 0.16em;
-            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            font-size: 0.78rem;
+            border: 1px solid rgba(198, 255, 0, 0.24);
+            background: rgba(198, 255, 0, 0.06);
         }
 
-        .language-toggle button.active {
-            background: #C6FF00;
-            color: #000000;
+        .drawer-social-link svg {
+            width: 18px;
+            height: 18px;
+            fill: #C6FF00;
         }
 
         /* Main Container - CENTERED */
@@ -513,6 +525,97 @@
             text-transform: uppercase;
             transform: none !important;
             text-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 20px rgba(198, 255, 0, 0.3);
+        }
+
+        /* Website Marquee */
+        .website-marquee {
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid rgba(198, 255, 0, 0.24);
+            border-bottom: 1px solid rgba(198, 255, 0, 0.24);
+            background: rgba(198, 255, 0, 0.06);
+            position: relative;
+        }
+
+        .website-marquee::before,
+        .website-marquee::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 10vw;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .website-marquee::before {
+            left: 0;
+            background: linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .website-marquee::after {
+            right: 0;
+            background: linear-gradient(270deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .website-marquee-track {
+            display: flex;
+            width: max-content;
+            animation: websiteMarquee 42s linear infinite;
+        }
+
+        .website-marquee:hover .website-marquee-track {
+            animation-play-state: paused;
+        }
+
+        .website-marquee-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .website-marquee-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #F5F5F5;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            padding: 0.7rem 1rem;
+            border: 1px solid rgba(198, 255, 0, 0.22);
+            background: rgba(0, 0, 0, 0.48);
+            transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .website-marquee-link span {
+            color: rgba(245, 245, 245, 0.58);
+            letter-spacing: 0.06em;
+            text-transform: none;
+        }
+
+        .website-marquee-link:hover {
+            color: #C6FF00;
+            border-color: #C6FF00;
+            background: rgba(198, 255, 0, 0.1);
+        }
+
+        @keyframes websiteMarquee {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .website-marquee-track {
+                animation: none;
+            }
         }
 
         /* Section Headers */
@@ -1158,9 +1261,25 @@
         }
 
         @media (max-width: 768px) {
+            html,
+            body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            .cursor,
+            .cursor-follower {
+                display: none;
+            }
+
             header {
                 padding: 1rem;
                 gap: 1rem;
+                min-height: 76px;
             }
 
             .nav-links {
@@ -1182,33 +1301,151 @@
                 letter-spacing: 0.22em;
             }
 
+            .mobile-drawer {
+                width: min(92vw, 420px);
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .drawer-header {
+                padding-bottom: 0.85rem;
+            }
+
+            .drawer-body {
+                gap: 1rem;
+            }
+
+            .drawer-nav {
+                gap: 0.55rem;
+            }
+
+            .drawer-nav-link,
+            .drawer-dropdown-toggle {
+                min-height: 48px;
+                padding: 0.75rem 0;
+                font-size: 0.84rem;
+            }
+
+            .drawer-dropdown-menu a {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+
+            .drawer-cta,
+            .drawer-social-link {
+                width: 100%;
+                min-height: 50px;
+            }
+
             .container-inner {
                 padding: 0 1rem;
             }
 
+            .main-container {
+                padding: 0;
+            }
+
+            .section-header {
+                margin: 3.25rem 0 1.5rem;
+                display: block;
+            }
+
+            .section-header h2 {
+                font-size: 0.78rem;
+                letter-spacing: 0.28em;
+            }
+
+            .line {
+                width: 100%;
+                max-width: 160px;
+            }
+
             .about-grid {
                 grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .about-text,
+            .education-card,
+            .skill-category,
+            .project-card,
+            .client-card,
+            .cert-item {
+                width: 100%;
             }
 
             .skills-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .skill-tags {
+                gap: 0.45rem;
+            }
+
+            .skill-tag {
+                min-height: 36px;
+                display: inline-flex;
+                align-items: center;
             }
 
             .projects-grid {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 1rem;
+                margin: 1rem 0 0;
+            }
+
+            .project-card {
+                min-height: auto;
+                padding: 1.25rem;
             }
 
             .client-cards-container {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .client-work-section {
+                margin-bottom: 3.25rem;
+                padding-top: 1.25rem;
+            }
+
+            .client-preview {
+                aspect-ratio: 16 / 10;
+            }
+
+            .client-copy {
+                padding: 1.1rem;
+            }
+
+            .client-link {
+                width: 100%;
+                min-height: 48px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(198, 255, 0, 0.28);
+                margin-top: 0.25rem;
             }
 
             .experience-item {
                 grid-template-columns: 1fr;
+                gap: 0.9rem;
+                padding: 1.4rem 0;
+            }
+
+            .experience-right ul {
+                padding-left: 1.1rem;
             }
 
             .certs-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .cert-item {
+                padding: 1rem 0;
             }
 
             .featured-grid-overlay {
@@ -1216,30 +1453,78 @@
             }
 
             .hero {
+                min-height: calc(100svh - 76px);
                 background-size: 120% auto;
                 background-position: center 40%;
+                padding: 3rem 1rem;
             }
 
             .hero-title {
-                font-size: 2.5rem;
-                letter-spacing: 4px;
+                font-size: clamp(2.35rem, 15vw, 4rem);
+                letter-spacing: 0.12em;
+                overflow-wrap: anywhere;
+            }
+
+            .hero-subtitle {
+                font-size: 0.78rem;
+                letter-spacing: 0.18em;
+                line-height: 1.6;
+            }
+
+            .website-marquee-link {
+                font-size: 0.7rem;
+                padding: 0.6rem 0.85rem;
             }
 
             .contact-email {
-                font-size: 1.2rem;
+                width: 100%;
+                min-height: 52px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: clamp(0.95rem, 4.6vw, 1.2rem);
+                padding: 0.8rem 1rem;
+                border: 1px solid rgba(198, 255, 0, 0.28);
+                overflow-wrap: anywhere;
             }
 
             .social-container {
-                gap: 1.5rem;
-                flex-wrap: wrap;
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                margin-top: 1rem;
+            }
+
+            .social-link {
+                width: 100%;
+            }
+
+            .social-item {
+                width: 100%;
+                min-height: 52px;
+                flex-direction: row;
+                justify-content: center;
+                border: 1px solid rgba(198, 255, 0, 0.18);
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            .social-icon {
+                width: 36px;
+                height: 36px;
             }
 
             main {
-                padding-top: 120px;
+                padding-top: 76px;
             }
 
             .portfolio-content {
                 padding: 0 1rem;
+            }
+
+            footer {
+                padding: 1.5rem 1rem;
+                line-height: 1.6;
             }
 
         }
@@ -1247,34 +1532,60 @@
         @media (max-width: 480px) {
             .mobile-drawer {
                 width: 100vw;
+                padding: 0.9rem;
+            }
+
+            .drawer-logo {
+                width: 42px;
+                height: 42px;
             }
 
             .drawer-brand-title {
                 font-size: 0.74rem;
+                letter-spacing: 0.14em;
+            }
+
+            .drawer-brand-subtitle {
+                font-size: 0.64rem;
+                letter-spacing: 0.06em;
             }
 
             .hero-title {
-                font-size: 2rem;
+                font-size: clamp(2rem, 14vw, 2.7rem);
             }
 
             .hero {
                 background-size: 150% auto;
+                padding: 2.5rem 0.85rem;
+            }
+
+            .website-marquee-link {
+                max-width: 86vw;
+            }
+
+            .project-title,
+            .client-copy h3 {
+                overflow-wrap: anywhere;
+            }
+
+            .contact-section {
+                width: 100%;
             }
 
             .social-icon {
-                width: 40px;
-                height: 40px;
+                width: 34px;
+                height: 34px;
             }
 
             .social-icon svg {
-                width: 20px;
-                height: 20px;
+                width: 18px;
+                height: 18px;
             }
         }
     </style>
-    <meta name="description" content="Kristina Visaya frontend and website design portfolio">
+    <meta name="description" content="Kristina Visaya is a frontend web developer and website designer creating responsive, SEO-friendly websites for small businesses, service brands, and client portfolios.">
     <meta property="og:title" content="KRISTINA VISAYA - Frontend & Website Design Portfolio">
-    <meta property="og:description" content="Kristina Visaya frontend and website design portfolio">
+    <meta property="og:description" content="Frontend web developer and website designer creating responsive, SEO-friendly websites for small businesses and service brands.">
     <meta property="og:type" content="website">
 </head>
 <body>
@@ -1315,41 +1626,43 @@
             <button class="drawer-close" id="drawerClose" type="button" aria-label="Close navigation menu">&times;</button>
         </div>
 
-        <nav class="drawer-nav" aria-label="Mobile navigation">
-            <a href="#home" class="drawer-nav-link" data-drawer-link>Home</a>
+        <div class="drawer-body">
+            <nav class="drawer-nav" aria-label="Mobile navigation">
+                <a href="#home" class="drawer-nav-link" data-drawer-link>Home</a>
 
-            <div class="drawer-dropdown open">
-                <button class="drawer-dropdown-toggle" type="button" aria-expanded="true">Profile</button>
-                <div class="drawer-dropdown-menu">
-                    <div class="drawer-dropdown-menu-inner">
-                        <a href="#about" data-drawer-link>About</a>
-                        <a href="#skills" data-drawer-link>Skills</a>
+                <div class="drawer-dropdown open">
+                    <button class="drawer-dropdown-toggle" type="button" aria-expanded="true">Profile</button>
+                    <div class="drawer-dropdown-menu">
+                        <div class="drawer-dropdown-menu-inner">
+                            <a href="#about" data-drawer-link>About</a>
+                            <a href="#skills" data-drawer-link>Skills</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="drawer-dropdown">
-                <button class="drawer-dropdown-toggle" type="button" aria-expanded="false">Work</button>
-                <div class="drawer-dropdown-menu">
-                    <div class="drawer-dropdown-menu-inner">
-                        <a href="#projects" data-drawer-link>Projects</a>
-                        <a href="#experience" data-drawer-link>Experience</a>
-                        <a href="#certifications" data-drawer-link>Certifications</a>
+                <div class="drawer-dropdown">
+                    <button class="drawer-dropdown-toggle" type="button" aria-expanded="false">Work</button>
+                    <div class="drawer-dropdown-menu">
+                        <div class="drawer-dropdown-menu-inner">
+                            <a href="#projects" data-drawer-link>Projects</a>
+                            <a href="#experience" data-drawer-link>Experience</a>
+                            <a href="#certifications" data-drawer-link>Certifications</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="drawer-dropdown">
-                <button class="drawer-dropdown-toggle" type="button" aria-expanded="false">Connect</button>
-                <div class="drawer-dropdown-menu">
-                    <div class="drawer-dropdown-menu-inner">
-                        <a href="#contact" data-drawer-link>Contact</a>
+                <div class="drawer-dropdown">
+                    <button class="drawer-dropdown-toggle" type="button" aria-expanded="false">Connect</button>
+                    <div class="drawer-dropdown-menu">
+                        <div class="drawer-dropdown-menu-inner">
+                            <a href="#contact" data-drawer-link>Contact</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
 
-        <a href="#contact" class="drawer-cta" data-drawer-link>Book a Project Call</a>
+            <a href="#contact" class="drawer-cta" data-drawer-link>Book a Project Call</a>
+        </div>
 
         <div class="drawer-footer">
             <div class="drawer-contact">
@@ -1358,13 +1671,12 @@
                 <span>Asia/Manila</span>
             </div>
 
-            <div>
-                <span class="drawer-label">Language</span>
-                <div class="language-toggle" aria-label="Language toggle">
-                    <button type="button" class="active">EN</button>
-                    <button type="button">NO</button>
-                </div>
-            </div>
+            <a href="https://github.com/bojji3" target="_blank" rel="noopener noreferrer" class="drawer-social-link" aria-label="Open GitHub profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                </svg>
+                GitHub
+            </a>
         </div>
     </aside>
 
@@ -1378,6 +1690,33 @@
             </div>
         </section>
 
+        <section class="website-marquee" aria-label="Websites built by Kristina Visaya">
+            <div class="website-marquee-track">
+                <div class="website-marquee-group">
+                    <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">RS Bygg <span>www.rs-bygg.no</span></a>
+                    <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Joraasen BSM <span>www.joraasen-bsm.no</span></a>
+                    <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Arendal Bilsenter AS <span>Live preview</span></a>
+                    <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Khalifa Management <span>Live preview</span></a>
+                    <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Nourish Me Wholefoods <span>Live preview</span></a>
+                    <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Schedule One <span>Live preview</span></a>
+                    <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Facial Aesthetics <span>Live preview</span></a>
+                    <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Handeland NITO Takstmann <span>Live preview</span></a>
+                    <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Fajitas &amp; Margaritas <span>Live preview</span></a>
+                </div>
+                <div class="website-marquee-group" aria-hidden="true">
+                    <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">RS Bygg <span>www.rs-bygg.no</span></a>
+                    <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Joraasen BSM <span>www.joraasen-bsm.no</span></a>
+                    <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Arendal Bilsenter AS <span>Live preview</span></a>
+                    <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Khalifa Management <span>Live preview</span></a>
+                    <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Nourish Me Wholefoods <span>Live preview</span></a>
+                    <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Schedule One <span>Live preview</span></a>
+                    <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Facial Aesthetics <span>Live preview</span></a>
+                    <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Handeland NITO Takstmann <span>Live preview</span></a>
+                    <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Fajitas &amp; Margaritas <span>Live preview</span></a>
+                </div>
+            </div>
+        </section>
+
         <!-- About Section -->
         <section id="about" class="main-container">
             <div class="container-inner">
@@ -1388,7 +1727,7 @@
 
                 <div class="about-grid">
                     <div class="about-text fade-in">
-                        <p>A website designer and frontend developer focused on building <strong>responsive, conversion-ready websites</strong> for businesses and personal brands. Skilled in turning visual direction into polished web experiences with clean layouts, accessible interfaces, and performance-conscious implementation. Passionate about <strong>modern website design, frontend development</strong>, and creating user-focused digital experiences that feel clear, credible, and easy to use.</p>
+                        <p>A website designer and frontend developer focused on building <strong>responsive, SEO-friendly websites</strong> for businesses and personal brands. Skilled in turning visual direction into polished web experiences with clean layouts, accessible interfaces, search-friendly content structure, and performance-conscious implementation. Passionate about <strong>modern website design, frontend development</strong>, and creating user-focused digital experiences that feel clear, credible, and easy to find online.</p>
                     </div>
 
                     <div class="education-card fade-in">
@@ -1416,11 +1755,14 @@
                             <span class="skill-tag">HTML5/CSS3</span>
                             <span class="skill-tag">JavaScript</span>
                             <span class="skill-tag">React</span>
+                            <span class="skill-tag">Vue</span>
                             <span class="skill-tag">Next.js</span>
+                            <span class="skill-tag">Vite</span>
                             <span class="skill-tag">TypeScript</span>
                             <span class="skill-tag">Responsive Design</span>
                             <span class="skill-tag">UI/UX Implementation</span>
                             <span class="skill-tag">Website Design</span>
+                            <span class="skill-tag">SEO Content Structure</span>
                             <span class="skill-tag">Django</span>
                         </div>
                     </div>
@@ -1704,6 +2046,23 @@
                 </div>
 
                 <div class="experience-grid">
+                    <!-- Freelance Web Developer/Designer -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">Freelance Web Developer/Designer</div>
+                            <div class="company">Self-Employed</div>
+                            <div class="date">May 2024 - Present</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li>Design and build responsive websites for small businesses, service brands, and client-facing portfolios</li>
+                                <li>Translate business goals into clear website structure, polished UI, and conversion-focused page experiences</li>
+                                <li>Improve search visibility with SEO-friendly page structure, content hierarchy, metadata, and performance-minded frontend implementation</li>
+                                <li>Manage full development lifecycle using Git for version control and client collaboration</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <!-- NEXYS Experience -->
                     <div class="experience-item fade-in stagger-item">
                         <div class="experience-left">
@@ -1716,22 +2075,6 @@
                                 <li>Lead development of React Native disaster preparedness app with offline functionality and AI-powered chatbot for emergency response</li>
                                 <li>Engineer physics-based gameplay mechanics using React Native Game Engine for training modules</li>
                                 <li>Architect offline-capable AI chatbot for evacuation routes during network failures</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Freelance Developer -->
-                    <div class="experience-item fade-in stagger-item">
-                        <div class="experience-left">
-                            <div class="role">Freelance Software & Web Developer</div>
-                            <div class="company">Self-Employed</div>
-                            <div class="date">May 2026 - Present</div>
-                        </div>
-                        <div class="experience-right">
-                            <ul>
-                                <li>Design and build responsive websites for small businesses, service brands, and client-facing portfolios</li>
-                                <li>Translate business goals into clear website structure, polished UI, and conversion-focused page experiences</li>
-                                <li>Manage full development lifecycle using Git for version control and client collaboration</li>
                             </ul>
                         </div>
                     </div>
@@ -1897,7 +2240,7 @@
 
         <!-- Footer -->
         <footer>
-            <p>© 2025 KRISTINA VISAYA - Frontend Developer & Website Designer</p>
+            <p>© 2026 KRISTINA VISAYA - Frontend Developer & Website Designer</p>
         </footer>
     </main>
 
