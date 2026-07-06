@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title data-id="th-modified">KRISTINA VISAYA — Developer Portfolio</title>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #000000;
+            color: #F5F5F5;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #C6FF00 rgba(255, 255, 255, 0.08);
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #C6FF00 0%, #7EA300 100%);
+            border-radius: 999px;
+            border: 2px solid #000000;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #D8FF4D 0%, #94C400 100%);
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 8px;
+            height: 8px;
+            background: #C6FF00;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #C6FF00;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: width 0.3s, height 0.3s;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+        }
+
+        /* HEADER - FIXED POSITION, ALWAYS VISIBLE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(198, 255, 0, 0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        /* Add padding to main content to account for fixed header */
+        main {
+            padding-top: 80px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #F5F5F5;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            color: #F5F5F5;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #C6FF00;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a:hover {
+            color: #C6FF00;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle,
+        .mobile-drawer,
+        .drawer-backdrop {
+            display: none;
+        }
+
+        .menu-toggle {
+            width: 52px;
+            height: 52px;
+            border: 1px solid rgba(198, 255, 0, 0.25);
+            background: rgba(255, 255, 255, 0.03);
+            color: #F5F5F5;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.32rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .menu-toggle span {
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            border-color: #C6FF00;
+            background: rgba(198, 255, 0, 0.08);
+        }
+
+        body.drawer-open {
+            overflow: hidden;
+        }
+
+        .drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+            z-index: 1040;
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(88vw, 420px);
+            height: 100vh;
+            padding: 1.25rem 1.25rem 1.5rem;
+            background:
+                linear-gradient(180deg, rgba(198, 255, 0, 0.08), transparent 28%),
+                rgba(6, 6, 6, 0.98);
+            border-left: 1px solid rgba(198, 255, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+        }
+
+        body.drawer-open .drawer-backdrop {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        body.drawer-open .mobile-drawer {
+            transform: translateX(0);
+        }
+
+        body.drawer-open .menu-toggle span:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        body.drawer-open .menu-toggle span:nth-child(2) {
+            opacity: 0;
+        }
+
+        body.drawer-open .menu-toggle span:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(198, 255, 0, 0.18);
+        }
+
+        .drawer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            text-decoration: none;
+            color: #F5F5F5;
+        }
+
+        .drawer-logo {
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(198, 255, 0, 0.28);
+            background: rgba(198, 255, 0, 0.08);
+            padding: 0.35rem;
+            flex-shrink: 0;
+        }
+
+        .drawer-brand-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .drawer-brand-title {
+            font-size: 0.82rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .drawer-brand-subtitle {
+            font-size: 0.72rem;
+            color: rgba(245, 245, 245, 0.64);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .drawer-close {
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(198, 255, 0, 0.2);
+            background: transparent;
+            color: #F5F5F5;
+            font-size: 1.35rem;
+            cursor: pointer;
+        }
+
+        .drawer-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .drawer-nav-link,
+        .drawer-dropdown-toggle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 0;
+            border: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: transparent;
+            color: #F5F5F5;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.9rem;
+            font-weight: 300;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .drawer-dropdown-toggle::after {
+            content: '+';
+            color: #C6FF00;
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: transform 0.25s ease;
+        }
+
+        .drawer-dropdown.open .drawer-dropdown-toggle::after {
+            transform: rotate(45deg);
+        }
+
+        .drawer-dropdown-menu {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.28s ease;
+        }
+
+        .drawer-dropdown.open .drawer-dropdown-menu {
+            grid-template-rows: 1fr;
+        }
+
+        .drawer-dropdown-menu-inner {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            padding-left: 0.9rem;
+        }
+
+        .drawer-dropdown-menu a {
+            color: rgba(245, 245, 245, 0.76);
+            text-decoration: none;
+            padding: 0.55rem 0;
+            font-size: 0.9rem;
+        }
+
+        .drawer-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border: 1px solid #C6FF00;
+            color: #000000;
+            background: #C6FF00;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .drawer-footer {
+            margin-top: auto;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(198, 255, 0, 0.18);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .drawer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .drawer-label {
+            color: rgba(245, 245, 245, 0.54);
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 0.68rem;
+        }
+
+        .drawer-contact a,
+        .drawer-contact span {
+            color: #F5F5F5;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .language-toggle {
+            display: inline-flex;
+            align-self: flex-start;
+            border: 1px solid rgba(198, 255, 0, 0.2);
+        }
+
+        .language-toggle button {
+            border: 0;
+            background: transparent;
+            color: rgba(245, 245, 245, 0.7);
+            padding: 0.7rem 0.95rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.7rem;
+        }
+
+        .language-toggle button.active {
+            background: #C6FF00;
+            color: #000000;
+        }
+
+        /* Main Container - CENTERED */
+        .main-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .container-inner {
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 2rem;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid rgba(198, 255, 0, 0.2);
+            width: 100%;
+            background-color: #000000;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" opacity="0.45"><defs><linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23C6FF00;stop-opacity:0.4" /><stop offset="50%" style="stop-color:%23C6FF00;stop-opacity:0.2" /><stop offset="100%" style="stop-color:%23C6FF00;stop-opacity:0.4" /></linearGradient><filter id="glow-effect"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect x="250" y="200" width="700" height="400" rx="30" fill="none" stroke="%23C6FF00" stroke-width="3" stroke-opacity="0.6" filter="url(%23glow-effect)"/><rect x="300" y="250" width="600" height="280" rx="15" fill="none" stroke="%23C6FF00" stroke-width="2" stroke-opacity="0.5"/><line x1="350" y1="300" x2="550" y2="300" stroke="%23C6FF00" stroke-width="2.5" stroke-opacity="0.6"/><line x1="350" y1="330" x2="700" y2="330" stroke="%23C6FF00" stroke-width="2.5" stroke-opacity="0.6"/><line x1="350" y1="360" x2="600" y2="360" stroke="%23C6FF00" stroke-width="2.5" stroke-opacity="0.6"/><line x1="350" y1="390" x2="850" y2="390" stroke="%23C6FF00" stroke-width="2.5" stroke-opacity="0.6"/><line x1="350" y1="420" x2="750" y2="420" stroke="%23C6FF00" stroke-width="2.5" stroke-opacity="0.6"/><line x1="350" y1="450" x2="650" y2="450" stroke="%23C6FF00" stroke-width="2.5" stroke-opacity="0.6"/><line x1="350" y1="480" x2="800" y2="480" stroke="%23C6FF00" stroke-width="2.5" stroke-opacity="0.6"/><rect x="300" y="540" width="600" height="40" rx="5" fill="none" stroke="%23C6FF00" stroke-width="2" stroke-opacity="0.5"/><circle cx="350" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="380" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="410" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="440" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="470" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="500" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="530" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="560" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="590" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="620" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="650" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="680" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="710" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="740" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="770" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><circle cx="800" cy="560" r="5" fill="%23C6FF00" fill-opacity="0.5"/><line x1="300" y1="250" x2="300" y2="540" stroke="%23C6FF00" stroke-width="2" stroke-opacity="0.5"/><line x1="900" y1="250" x2="900" y2="540" stroke="%23C6FF00" stroke-width="2" stroke-opacity="0.5"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 85% auto;
+            background-blend-mode: soft-light;
+            transform: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: heroEntrance 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: none !important;
+            opacity: 1 !important;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+
+        @keyframes heroEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 300;
+            letter-spacing: 8px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #F5F5F5;
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 40px rgba(198, 255, 0, 0.5);
+            transform: none !important;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #C6FF00;
+            text-transform: uppercase;
+            transform: none !important;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 20px rgba(198, 255, 0, 0.3);
+        }
+
+        /* Section Headers */
+        .section-header {
+            margin: 6rem 0 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #C6FF00;
+            margin-bottom: 1rem;
+        }
+
+        .section-header .line {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #C6FF00, transparent);
+            animation: glowPulse 3s infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 4rem;
+            margin-bottom: 6rem;
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: rgba(245, 245, 245, 0.9);
+        }
+
+        .about-text strong {
+            color: #C6FF00;
+            font-weight: 500;
+        }
+
+        .education-card {
+            border-left: 1px solid rgba(198, 255, 0, 0.3);
+            padding-left: 2rem;
+        }
+
+        .education-card h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #C6FF00;
+            margin-bottom: 1rem;
+        }
+
+        .education-card p {
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-card .date {
+            font-size: 0.9rem;
+            color: rgba(198, 255, 0, 0.7);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .skill-category {
+            padding: 2rem;
+            border: 1px solid rgba(198, 255, 0, 0.15);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            border-color: #C6FF00;
+        }
+
+        .skill-category h3 {
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #C6FF00;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .skill-tag {
+            font-size: 0.85rem;
+            font-weight: 300;
+            padding: 0.3rem 0.8rem;
+            border: 1px solid rgba(198, 255, 0, 0.3);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .skill-tag:hover {
+            background: rgba(198, 255, 0, 0.1);
+            border-color: #C6FF00;
+            transform: scale(1.05);
+        }
+
+        /* PORTFOLIO SECTION - RESTRUCTURED */
+        .portfolio-section {
+            margin: 6rem 0;
+            width: 100%;
+        }
+
+        .portfolio-content {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Featured Projects Section - WITH GRID LINES */
+        .featured-projects {
+            position: relative;
+            margin-bottom: 6rem;
+        }
+
+        /* Grid lines overlay - ONLY FOR FEATURED PROJECTS */
+        .featured-grid-overlay {
+            position: absolute;
+            top: 180px; /* Start after the section header */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1400px;
+            height: calc(100% - 100px); /* Cover only the projects area */
+            pointer-events: none;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+            padding: 0 2rem;
+        }
+
+        .featured-grid-line {
+            height: 100%;
+            border-left: 1px solid rgba(198, 255, 0, 0.2);
+        }
+
+        .featured-grid-line:last-child {
+            border-right: 1px solid rgba(198, 255, 0, 0.2);
+        }
+
+        /* Horizontal lines */
+        .featured-grid-overlay::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 2rem;
+            width: calc(100% - 4rem);
+            height: 1px;
+            background: rgba(198, 255, 0, 0.2);
+        }
+
+        .featured-grid-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2rem;
+            width: calc(100% - 4rem);
+            height: 1px;
+            background: rgba(198, 255, 0, 0.2);
+        }
+
+        /* Featured Projects Grid */
+        .projects-grid {
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+            margin: 2rem 0;
+            width: 100%;
+        }
+
+        .project-card {
+            padding: 2rem;
+            border: 1px solid rgba(198, 255, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            width: 100%;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(198, 255, 0, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #C6FF00;
+            box-shadow: 0 10px 30px -15px rgba(198, 255, 0, 0.3);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: #F5F5F5;
+            line-height: 1.2;
+        }
+
+        .project-divider {
+            width: 40px;
+            height: 2px;
+            background: #C6FF00;
+            margin: 1rem 0;
+            transform: scaleX(0.5);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-divider {
+            transform: scaleX(1);
+        }
+
+        .project-description {
+            font-weight: 300;
+            font-size: 0.95rem;
+            color: rgba(245, 245, 245, 0.8);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .project-tech span {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(198, 255, 0, 0.1);
+            border: 1px solid rgba(198, 255, 0, 0.3);
+            border-radius: 4px;
+            color: #C6FF00;
+            line-height: 1.4;
+        }
+
+        /* Client Work Section - COMPLETELY SEPARATE, NO GRID LINES */
+        .client-work-section {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(198, 255, 0, 0.2);
+            position: relative;
+            z-index: 30;
+        }
+
+        .client-cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2rem;
+        }
+
+        .client-card {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(198, 255, 0, 0.15);
+            transition: all 0.4s ease;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        .client-card:hover {
+            border-color: #C6FF00;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -15px rgba(198, 255, 0, 0.3);
+        }
+
+        .client-preview {
+            display: block;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(198, 255, 0, 0.12);
+            background: linear-gradient(135deg, rgba(198, 255, 0, 0.16), rgba(0, 0, 0, 0.25));
+        }
+
+        .client-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .client-card:hover .client-preview img {
+            transform: scale(1.04);
+        }
+
+        .client-copy {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 1.5rem;
+        }
+
+        .client-card h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #C6FF00;
+            margin-bottom: 0.5rem;
+        }
+
+        .client-category-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .client-category {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.75rem;
+            border: 1px solid rgba(198, 255, 0, 0.3);
+            color: rgba(245, 245, 245, 0.9);
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .client-card p {
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: rgba(245, 245, 245, 0.8);
+        }
+
+        .client-link {
+            display: inline-block;
+            color: #F5F5F5;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #C6FF00;
+            padding-bottom: 2px;
+            transition: color 0.3s ease;
+            margin-top: auto;
+        }
+
+        .client-link:hover {
+            color: #C6FF00;
+        }
+
+        /* Experience Grid */
+        .experience-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .experience-item {
+            display: grid;
+            grid-template-columns: 1.2fr 2fr;
+            gap: 2rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(198, 255, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .experience-item:hover {
+            border-bottom-color: #C6FF00;
+        }
+
+        .experience-left .role {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #C6FF00;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-left .company {
+            font-size: 0.9rem;
+            color: rgba(245, 245, 245, 0.7);
+            margin-bottom: 0.25rem;
+        }
+
+        .experience-left .date {
+            font-size: 0.85rem;
+            color: rgba(198, 255, 0, 0.7);
+            margin-top: 0.25rem;
+        }
+
+        .experience-right ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .experience-right li {
+            font-weight: 300;
+            font-size: 0.95rem;
+            color: rgba(245, 245, 245, 0.8);
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .experience-right li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #C6FF00;
+            font-size: 1rem;
+        }
+
+        /* Certifications Grid */
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 4rem 0;
+        }
+
+        .cert-item {
+            padding: 1.5rem;
+            border: 1px solid rgba(198, 255, 0, 0.15);
+            transition: all 0.3s ease;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cert-item:hover {
+            border-color: #C6FF00;
+            background: rgba(198, 255, 0, 0.02);
+        }
+
+        .cert-item h4 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #C6FF00;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-item p {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(245, 245, 245, 0.7);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            margin: 6rem 0;
+            padding: 4rem 0;
+            border-top: 1px solid rgba(198, 255, 0, 0.2);
+            border-bottom: 1px solid rgba(198, 255, 0, 0.2);
+            text-align: center;
+        }
+
+        .contact-email {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #F5F5F5;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .contact-email:hover {
+            color: #C6FF00;
+        }
+
+        /* Social Links Container */
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .social-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(198, 255, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .social-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #C6FF00;
+            transition: all 0.3s ease;
+        }
+
+        .social-item:hover .social-icon {
+            border-color: #C6FF00;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(198, 255, 0, 0.3);
+        }
+
+        .social-item:hover .social-icon svg {
+            fill: #C6FF00;
+            filter: drop-shadow(0 0 5px rgba(198, 255, 0, 0.5));
+        }
+
+        .social-label {
+            font-size: 0.8rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: rgba(245, 245, 245, 0.7);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .social-item:hover .social-label {
+            color: #C6FF00;
+        }
+
+        .social-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 4rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: rgba(245, 245, 245, 0.5);
+            border-top: 1px solid rgba(198, 255, 0, 0.1);
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .stagger-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            header {
+                padding: 1.5rem 2rem;
+            }
+            
+            .projects-grid {
+                gap: 2rem;
+            }
+            
+            .featured-grid-overlay {
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .client-cards-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            
+            .featured-grid-overlay {
+                grid-template-columns: repeat(2, 1fr);
+                height: auto;
+            }
+            
+            .hero {
+                background-size: 100% auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle,
+            .mobile-drawer,
+            .drawer-backdrop {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+            }
+
+            .logo {
+                font-size: 0.92rem;
+                letter-spacing: 0.22em;
+            }
+            
+            .container-inner {
+                padding: 0 1rem;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .client-cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .experience-item {
+                grid-template-columns: 1fr;
+            }
+            
+            .certs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-grid-overlay {
+                display: none;
+            }
+            
+            .hero {
+                background-size: 120% auto;
+                background-position: center 40%;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            
+            .contact-email {
+                font-size: 1.2rem;
+            }
+            
+            .social-container {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+            
+            main {
+                padding-top: 120px;
+            }
+            
+            .portfolio-content {
+                padding: 0 1rem;
+            }
+            
+        }
+
+        @media (max-width: 480px) {
+            .mobile-drawer {
+                width: 100vw;
+            }
+
+            .drawer-brand-title {
+                font-size: 0.74rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero {
+                background-size: 150% auto;
+            }
+            
+            .social-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .social-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+<meta property="og:title" content="KRISTINA VISAYA — Developer Portfolio" data-id="th-modified"><meta name="description" content="New Text Document" data-id="th-modified"><meta property="og:description" content="New Text Document" data-id="th-modified"><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified"><meta property="og:url" content="https://krisfolio.tiiny.site/" data-id="th-modified"><meta property="og:type" content="website" data-id="th-modified"><meta property="og:image:width" content="1501" data-id="th-modified"><meta property="og:image:height" content="1501" data-id="th-modified"><meta property="og:image:type" content="image/png" data-id="th-modified"><script defer data-domain="krisfolio.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- FIXED HEADER - ALWAYS VISIBLE -->
+    <header>
+        <a href="#home" class="logo">KRISTINA VISAYA</a>
+        <nav class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileDrawer">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+        <div class="drawer-header">
+            <a href="#home" class="drawer-brand" data-drawer-link>
+                <img                     class="drawer-logo"
+                    alt="Kristina Visaya logo"
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23070707'/%3E%3Crect x='8' y='8' width='64' height='64' rx='10' fill='none' stroke='%23C6FF00' stroke-width='2'/%3E%3Cpath d='M24 57V23h7v15.5L46 23h8.5L39.5 39.5 56 57h-9.2L31 40.1V57z' fill='%23F5F5F5'/%3E%3C/svg%3E">
+                <span class="drawer-brand-copy">
+                    <span class="drawer-brand-title">Kristina Visaya</span>
+                    <span class="drawer-brand-subtitle">Developer Portfolio</span>
+                </span>
+            </a>
+            <button class="drawer-close" id="drawerClose" type="button" aria-label="Close navigation menu">&times;</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Mobile navigation">
+            <a href="#home" class="drawer-nav-link" data-drawer-link>Home</a>
+
+            <div class="drawer-dropdown open">
+                <button class="drawer-dropdown-toggle" type="button" aria-expanded="true">Profile</button>
+                <div class="drawer-dropdown-menu">
+                    <div class="drawer-dropdown-menu-inner">
+                        <a href="#about" data-drawer-link>About</a>
+                        <a href="#skills" data-drawer-link>Skills</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drawer-dropdown">
+                <button class="drawer-dropdown-toggle" type="button" aria-expanded="false">Work</button>
+                <div class="drawer-dropdown-menu">
+                    <div class="drawer-dropdown-menu-inner">
+                        <a href="#projects" data-drawer-link>Projects</a>
+                        <a href="#experience" data-drawer-link>Experience</a>
+                        <a href="#certifications" data-drawer-link>Certifications</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drawer-dropdown">
+                <button class="drawer-dropdown-toggle" type="button" aria-expanded="false">Connect</button>
+                <div class="drawer-dropdown-menu">
+                    <div class="drawer-dropdown-menu-inner">
+                        <a href="#contact" data-drawer-link>Contact</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <a href="#contact" class="drawer-cta" data-drawer-link>Book a Project Call</a>
+
+        <div class="drawer-footer">
+            <div class="drawer-contact">
+                <span class="drawer-label">Contact</span>
+                <a href="mailto:krisrivers00@gmail.com">krisrivers00@gmail.com</a>
+                <span>Asia/Manila</span>
+            </div>
+
+            <div>
+                <span class="drawer-label">Language</span>
+                <div class="language-toggle" aria-label="Language toggle">
+                    <button type="button" class="active">EN</button>
+                    <button type="button">NO</button>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title">KRISTINA<br>VISAYA</h1>
+                <div class="hero-subtitle">Full-Stack & Mobile Developer</div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="main-container">
+            <div class="container-inner">
+                <div class="section-header fade-in">
+                    <h2>About</h2>
+                    <div class="line"></div>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="about-text fade-in">
+                        <p>A professional specializing in <strong>full-stack and mobile development</strong>. Proficient in building responsive cross-platform applications using React Native and Flutter, with strong backend experience in Ruby on Rails and SQL. Passionate about <strong>system architecture, database optimization</strong>, and developing ethical, user-centric software solutions.</p>
+                    </div>
+                    
+                    <div class="education-card fade-in">
+                        <h3>Education</h3>
+                        <p>Ateneo de Naga University</p>
+                        <p>Bachelor of Science in Computer Science</p>
+                        <p class="date">Naga City, Camarines Sur</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="main-container">
+            <div class="container-inner">
+                <div class="section-header fade-in">
+                    <h2>Technical Toolkit</h2>
+                    <div class="line"></div>
+                </div>
+                
+                <div class="skills-grid">
+                    <div class="skill-category fade-in stagger-item">
+                        <h3>Web & Mobile</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">React Native</span>
+                            <span class="skill-tag">Expo</span>
+                            <span class="skill-tag">Django</span>
+                            <span class="skill-tag">Flutter</span>
+                            <span class="skill-tag">Dart</span>
+                            <span class="skill-tag">Kotlin</span>
+                            <span class="skill-tag">Next.js</span>
+                            <span class="skill-tag">TypeScript</span>
+                            <span class="skill-tag">HTML5/CSS3</span>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category fade-in stagger-item">
+                        <h3>Backend & Database</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Ruby on Rails</span>
+                            <span class="skill-tag">Ruby</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">C++</span>
+                            <span class="skill-tag">MySQL</span>
+                            <span class="skill-tag">SQLite</span>
+                            <span class="skill-tag">Firebase</span>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category fade-in stagger-item">
+                        <h3>DevOps & Platforms</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Git/GitHub</span>
+                            <span class="skill-tag">Linux</span>
+                            <span class="skill-tag">MVC</span>
+                            <span class="skill-tag">RESTful</span>
+                            <span class="skill-tag">ERD</span>
+                            <span class="skill-tag">Spring</span>
+                            <span class="skill-tag">Agile</span>
+                            <span class="skill-tag">CRM</span>
+                            <span class="skill-tag">VoIP</span>
+                            <span class="skill-tag">Google Sites</span>
+                            <span class="skill-tag">Wix</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO SECTION - RESTRUCTURED WITH SEPARATE CLIENT WORK -->
+        <section id="projects" class="portfolio-section">
+            <div class="portfolio-content">
+                <!-- FEATURED PROJECTS WITH GRID LINES -->
+                <div class="featured-projects">
+                    <!-- Grid lines overlay - ONLY FOR FEATURED PROJECTS -->
+                    <div class="featured-grid-overlay">
+                        <div class="featured-grid-line"></div>
+                        <div class="featured-grid-line"></div>
+                        <div class="featured-grid-line"></div>
+                    </div>
+                    
+                    <div class="section-header fade-in">
+                        <h2>FEATURED PROJECTS</h2>
+                        <div class="line"></div>
+                    </div>
+                    
+                    <!-- Projects Grid - WITH GRID LINES BEHIND -->
+                    <div class="projects-grid">
+                        <div class="project-card fade-in stagger-item">
+                            <h3 class="project-title">NEXYS</h3>
+                            <div class="project-divider"></div>
+                            <p class="project-description">Emergency response application with offline functionality, AI-powered chatbot, and physics-based training modules.</p>
+                            <div class="project-tech">
+                                <span>React Native</span>
+                                <span>Expo</span>
+                                <span>AI/ML</span>
+                                <span>Game Engine</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card fade-in stagger-item">
+                            <h3 class="project-title">Breakout Clone</h3>
+                            <div class="project-divider"></div>
+                            <p class="project-description">60 FPS mobile game with custom collision physics, multi-ball power-up, and progressive difficulty system.</p>
+                            <div class="project-tech">
+                                <span>React Native</span>
+                                <span>Game Engine</span>
+                                <span>TypeScript</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card fade-in stagger-item">
+                            <h3 class="project-title">Note-Taking App</h3>
+                            <div class="project-divider"></div>
+                            <p class="project-description">Cross-platform application with SQLite persistence, rich text editing, and dual-platform native UI.</p>
+                            <div class="project-tech">
+                                <span>Flutter</span>
+                                <span>Dart</span>
+                                <span>SQLite</span>
+                                <span>Provider</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card fade-in stagger-item">
+                            <h3 class="project-title">Bus Reservation</h3>
+                            <div class="project-divider"></div>
+                            <p class="project-description">MVC web application with complex relational databases and automated revenue calculations.</p>
+                            <div class="project-tech">
+                                <span>Ruby on Rails</span>
+                                <span>MySQL</span>
+                                <span>ActiveRecord</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card fade-in stagger-item">
+                            <h3 class="project-title">Sales Database</h3>
+                            <div class="project-divider"></div>
+                            <p class="project-description">Optimized SQL database with strategic indexing, achieving 25%+ query performance improvement.</p>
+                            <div class="project-tech">
+                                <span>SQL</span>
+                                <span>ERD</span>
+                                <span>Performance</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-card fade-in stagger-item">
+                            <h3 class="project-title">AI Data Pipeline</h3>
+                            <div class="project-divider"></div>
+                            <p class="project-description">Automated data labeling and validation system for machine learning training datasets.</p>
+                            <div class="project-tech">
+                                <span>Python</span>
+                                <span>TensorFlow</span>
+                                <span>Pandas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLIENT WORK SECTION - COMPLETELY SEPARATE, NO GRID LINES -->
+                <div class="client-work-section fade-in">
+                    <div class="section-header">
+                        <h2>CLIENT WORK</h2>
+                        <div class="line"></div>
+                    </div>
+                    
+                    <div class="client-cards-container">
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fwww.rs-bygg.no%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://www.rs-bygg.no/';" alt="RS Bygg website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>RS Bygg</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Residential Construction</div>
+                                    <div class="client-category">Carpentry</div>
+                                </div>
+                                <p>Business website for a construction company, focused on service visibility and a professional local presence.</p>
+                                <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fwww.joraasen-bsm.no%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://www.joraasen-bsm.no/';" alt="Joraasen BSM website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Joraasen Byggservice og Montasje AS</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Carpentry</div>
+                                    <div class="client-category">Home Maintenance</div>
+                                </div>
+                                <p>Local trades business website for a carpentry and maintenance company serving Sor-Fron and nearby areas, focused on services, quote requests, and homeowner trust.</p>
+                                <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+                        
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Farendal-bilsenter-as.demo-previews.com%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://arendal-bilsenter-as.demo-previews.com/';" alt="Arendal Bilsenter AS website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Arendal Bilsenter AS</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Auto Dealership</div>
+                                    <div class="client-category">Automotive Services</div>
+                                </div>
+                                <p>Automotive business website concept designed to showcase inventory, services, and dealership credibility.</p>
+                                <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fkhalifa-management-bedrifts-rdgiving.demo-previews.com%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://khalifa-management-bedrifts-rdgiving.demo-previews.com/';" alt="Khalifa Management website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Khalifa Management</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Business Consulting</div>
+                                    <div class="client-category">Financial Advisory</div>
+                                </div>
+                                <p>Corporate website concept for a management and business advisory brand with a clean, trust-focused presentation.</p>
+                                <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fnourish-me-wholefoods.demo-previews.com%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://nourish-me-wholefoods.demo-previews.com/';" alt="Nourish Me Wholefoods website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Nourish Me Wholefoods</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Wholefoods Retail</div>
+                                    <div class="client-category">Wellness</div>
+                                </div>
+                                <p>Wellness and wholefoods brand site concept tailored for product storytelling, healthy living, and online discovery.</p>
+                                <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fschedule-one.demo-previews.com%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://schedule-one.demo-previews.com/';" alt="Schedule One website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Schedule One</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Facility Maintenance</div>
+                                    <div class="client-category">Construction Services</div>
+                                </div>
+                                <p>Service business website concept for a facility maintenance and construction company, built to present capabilities, trust signals, and clear conversion paths.</p>
+                                <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Ffacial-aesthetics.demo-previews.com%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://facial-aesthetics.demo-previews.com/';" alt="Facial Aesthetics website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Facial Aesthetics</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Aesthetic Clinic</div>
+                                    <div class="client-category">Beauty &amp; Wellness</div>
+                                </div>
+                                <p>Elegant clinic website concept for facial aesthetics services with a premium presentation and booking-oriented structure.</p>
+                                <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fbyggmestertakstingenir-handeland-nito-takstmann.demo-previews.com%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/';" alt="Handeland NITO Takstmann website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Handeland NITO Takstmann</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Property Inspection</div>
+                                    <div class="client-category">Valuation Services</div>
+                                </div>
+                                <p>Professional service website concept for a building surveyor and valuation specialist, emphasizing trust and expertise.</p>
+                                <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+
+                        <div class="client-card fade-in stagger-item">
+                            <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-preview">
+                                <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Ffajitas-margaritas.demo-previews.com%2F?w=1200" onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1200/crop/800/noanimate/https://fajitas-margaritas.demo-previews.com/';" alt="Fajitas and Margaritas website preview" loading="lazy" referrerpolicy="no-referrer">
+                            </a>
+                            <div class="client-copy">
+                                <h3>Fajitas &amp; Margaritas</h3>
+                                <div class="client-category-group">
+                                    <div class="client-category">Restaurant</div>
+                                    <div class="client-category">Hospitality</div>
+                                </div>
+                                <p>Hospitality website concept designed to highlight menu content, atmosphere, and a strong dine-in brand presence.</p>
+                                <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="client-link">View Site &#8250;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="main-container">
+            <div class="container-inner">
+                <div class="section-header fade-in">
+                    <h2>EXPERIENCE</h2>
+                    <div class="line"></div>
+                </div>
+                
+                <div class="experience-grid">
+                    <!-- NEXYS Experience -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">Lead Developer</div>
+                            <div class="company">NEXYS - Emergency Response App</div>
+                            <div class="date">July 2025 - December 2025</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li>Lead development of React Native disaster preparedness app with offline functionality and AI-powered chatbot for emergency response</li>
+                                <li>Engineer physics-based gameplay mechanics using React Native Game Engine for training modules</li>
+                                <li>Architect offline-capable AI chatbot for evacuation routes during network failures</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Freelance Developer -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">Freelance Software & Web Developer</div>
+                            <div class="company">Self-Employed</div>
+                            <div class="date">May 2026 - Present</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li>Develop custom full-stack web applications and cross-platform mobile solutions for small businesses and academic clients</li>
+                                <li>Architect and deploy database-driven applications from technical specification to deployment</li>
+                                <li>Manage full development lifecycle using Git for version control and client collaboration</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Bell Sales Professional -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">Bell Sales Professional</div>
+                            <div class="company">Nordia Quantrics</div>
+                            <div class="date">June 2025 - September 2025</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li>Leveraged Bell's proprietary CRM software and real-time analytics dashboards to analyze customer profiles and service history</li>
+                                <li>Utilized AI-powered interactive scripting system to guide customer interactions and present data-driven product recommendations</li>
+                                <li>Employed algorithmic customer segmentation tools to match relevant Bell promotions to individual customer needs</li>
+                                <li>Operated cloud-based VoIP softphone application while navigating multiple knowledge-based sales applications</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Annotator - OpenTrainAI -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">Freelance Data Annotator</div>
+                            <div class="company">OpenTrainAI</div>
+                            <div class="date">Jan 2025 - May 2025</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li>Labeled and categorized text/audio datasets for AI model training using SuperAnnote platform</li>
+                                <li>Applied pattern recognition skills to validate data integrity for machine learning pipelines</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Annotator - Telus AI International -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">Data Annotator</div>
+                            <div class="company">Telus AI International</div>
+                            <div class="date">October 2024 - January 2025</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li><strong>Audio Data Labeling:</strong> Processed and categorized voice datasets, ensuring high accuracy for AI training</li>
+                                <li><strong>AI Training (FineTuning Studio):</strong> Contributed to model improvement by annotating and validating data patterns</li>
+                                <li><strong>Data Entry:</strong> Managed large-scale datasets with strict quality control, sharpening attention to detail</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- SQL Database Developer -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">SQL Database Developer</div>
+                            <div class="company">Academic Project</div>
+                            <div class="date">Dec 2023</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li>Developed comprehensive sales database from scratch, translating complex ERDs into functional SQL schemas</li>
+                                <li>Authored advanced SQL scripts improving query performance by 25%+ through strategic index implementation</li>
+                                <li>Created standardized database views for external dashboard integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature Writer -->
+                    <div class="experience-item fade-in stagger-item">
+                        <div class="experience-left">
+                            <div class="role">Feature Writer / Journalist</div>
+                            <div class="company">The Pillars (Ateneo de Naga)</div>
+                            <div class="date">2023 - 2024</div>
+                        </div>
+                        <div class="experience-right">
+                            <ul>
+                                <li>Researched and authored technical feature articles on campus innovation</li>
+                                <li>Translated complex technical subjects into accessible narratives for general audiences</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="main-container">
+            <div class="container-inner">
+                <div class="section-header fade-in">
+                    <h2>Certifications</h2>
+                    <div class="line"></div>
+                </div>
+                
+                <div class="certs-grid">
+                    <div class="cert-item fade-in stagger-item">
+                        <h4>Cybersecurity</h4>
+                        <p>Google Coursera</p>
+                    </div>
+                    <div class="cert-item fade-in stagger-item">
+                        <h4>Advanced Software Engineering</h4>
+                        <p>DICT LMS</p>
+                    </div>
+                    <div class="cert-item fade-in stagger-item">
+                        <h4>Linux Essentials & Unhatched</h4>
+                        <p>CISCO</p>
+                    </div>
+                    <div class="cert-item fade-in stagger-item">
+                        <h4>Programming Logic and Design</h4>
+                        <p>CISCO (C++ & Python)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="main-container">
+            <div class="container-inner">
+                <div class="contact-section">
+                    <a href="mailto:krisrivers00@gmail.com" class="contact-email fade-in">krisrivers00@gmail.com</a>
+                    
+                    <!-- Social Links Container -->
+                    <div class="social-container fade-in">
+                        <!-- GitHub -->
+                        <a href="https://github.com/bojji3" target="_blank" class="social-link">
+                            <div class="social-item">
+                                <div class="social-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                                    </svg>
+                                </div>
+                                <span class="social-label">GitHub</span>
+                            </div>
+                        </a>
+                        
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/kristina-visaya-6b373336b/" target="_blank" class="social-link">
+                            <div class="social-item">
+                                <div class="social-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                                    </svg>
+                                </div>
+                                <span class="social-label">LinkedIn</span>
+                            </div>
+                        </a>
+                        
+                        <!-- Email -->
+                        <a href="mailto:krisrivers00@gmail.com" class="social-link">
+                            <div class="social-item">
+                                <div class="social-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"></path>
+                                    </svg>
+                                </div>
+                                <span class="social-label">Email</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 KRISTINA VISAYA — Full-Stack & Mobile Developer</p>
+        </footer>
+    </main>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const cursorFollower = document.getElementById('cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorFollower.style.left = e.clientX + 'px';
+            cursorFollower.style.top = e.clientY + 'px';
+        });
+
+        // Cursor hover effect
+        const links = document.querySelectorAll('a, button, .skill-tag, .project-card, .client-card, .social-item');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorFollower.style.width = '60px';
+                cursorFollower.style.height = '60px';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorFollower.style.width = '40px';
+                cursorFollower.style.height = '40px';
+            });
+        });
+
+        // Mobile drawer navigation
+        const body = document.body;
+        const menuToggle = document.getElementById('menuToggle');
+        const drawerClose = document.getElementById('drawerClose');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const drawerBackdrop = document.getElementById('drawerBackdrop');
+        const drawerLinks = document.querySelectorAll('[data-drawer-link]');
+        const drawerDropdowns = document.querySelectorAll('.drawer-dropdown');
+
+        function setDrawerState(isOpen) {
+            body.classList.toggle('drawer-open', isOpen);
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+            mobileDrawer.setAttribute('aria-hidden', String(!isOpen));
+        }
+
+        function closeDrawer() {
+            setDrawerState(false);
+        }
+
+        function openDrawer() {
+            setDrawerState(true);
+        }
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = body.classList.contains('drawer-open');
+            setDrawerState(!isOpen);
+        });
+
+        drawerClose.addEventListener('click', closeDrawer);
+        drawerBackdrop.addEventListener('click', closeDrawer);
+
+        drawerLinks.forEach(link => {
+            link.addEventListener('click', closeDrawer);
+        });
+
+        drawerDropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.drawer-dropdown-toggle');
+            toggle.addEventListener('click', () => {
+                const isOpen = dropdown.classList.contains('open');
+                drawerDropdowns.forEach(item => {
+                    item.classList.remove('open');
+                    item.querySelector('.drawer-dropdown-toggle').setAttribute('aria-expanded', 'false');
+                });
+                if (!isOpen) {
+                    dropdown.classList.add('open');
+                    toggle.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && body.classList.contains('drawer-open')) {
+                closeDrawer();
+            }
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.target.closest('.hero')) return;
+                
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    if (entry.target.classList.contains('projects-grid') || 
+                        entry.target.classList.contains('skills-grid') ||
+                        entry.target.classList.contains('experience-grid') ||
+                        entry.target.classList.contains('certs-grid') ||
+                        entry.target.classList.contains('client-cards-container')) {
+                        
+                        const items = entry.target.querySelectorAll('.stagger-item');
+                        items.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('visible');
+                            }, index * 100);
+                        });
+                    }
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-in, .projects-grid, .skills-grid, .experience-grid, .certs-grid, .client-cards-container').forEach(el => {
+            if (!el.closest('.hero')) observer.observe(el);
+        });
+
+        // GSAP animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.utils.toArray('.project-card').forEach((card, i) => {
+            ScrollTrigger.create({
+                trigger: card,
+                start: 'top bottom',
+                end: 'bottom top',
+                onUpdate: (self) => {
+                    if (!card.closest('.hero')) {
+                        const progress = self.progress;
+                        const yOffset = (progress - 0.5) * 30;
+                        gsap.set(card, { y: yOffset });
+                    }
+                }
+            });
+        });
+
+        gsap.utils.toArray('.project-divider').forEach(divider => {
+            ScrollTrigger.create({
+                trigger: divider,
+                start: 'top bottom',
+                end: 'bottom top',
+                onUpdate: (self) => {
+                    if (!divider.closest('.hero')) {
+                        const scale = 0.5 + (self.progress * 0.5);
+                        gsap.set(divider, { scaleX: scale });
+                    }
+                }
+            });
+        });
+
+        // Active section highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const headerHeight = document.querySelector('header').offsetHeight;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - headerHeight - 50;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionBottom) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = link.getAttribute('href') === `#${current}` ? '#C6FF00' : '#F5F5F5';
+            });
+        });
+
+        // iOS viewport height fix
+        const setVH = () => {
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+        };
+        window.addEventListener('resize', setVH);
+        setVH();
+    </script>
+</body>
+</html>
