@@ -585,16 +585,21 @@
             align-items: center;
             justify-content: center;
             min-width: 128px;
+            width: 128px;
+            height: 64px;
             text-decoration: none;
             white-space: nowrap;
-            padding: 0 2.25rem;
-            opacity: 0.78;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            padding: 0;
+            opacity: 0.86;
+            background: rgba(245, 245, 245, 0.9);
+            border: 1px solid rgba(245, 245, 245, 0.16);
+            transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
         }
 
         .website-marquee-item:hover {
             opacity: 1;
             transform: translateY(-1px);
+            background: rgba(245, 245, 245, 0.98);
         }
 
         .toolkit-mark {
@@ -611,7 +616,7 @@
             height: 46px;
             display: block;
             object-fit: contain;
-            filter: grayscale(1) brightness(0) invert(1);
+            filter: grayscale(1) contrast(1.05);
         }
 
         .toolkit-logo-icon {
@@ -621,7 +626,7 @@
         }
 
         .semrush-logo {
-            filter: grayscale(1) brightness(0) invert(1);
+            filter: grayscale(1) contrast(1.05);
         }
 
         @keyframes websiteMarquee {
@@ -1495,7 +1500,8 @@
             .website-marquee-item {
                 font-size: 0.7rem;
                 min-width: 104px;
-                padding: 0 1.6rem;
+                width: 104px;
+                height: 58px;
             }
 
             .contact-email {
