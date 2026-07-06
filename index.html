@@ -583,24 +583,32 @@
         .website-marquee-link {
             display: inline-flex;
             align-items: center;
-            color: rgba(245, 245, 245, 0.78);
+            justify-content: center;
+            min-width: 68px;
             text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 0.72rem;
             white-space: nowrap;
-            padding: 0 1.35rem;
-            transition: color 0.3s ease;
+            padding: 0 1.4rem;
+            opacity: 0.78;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         .website-marquee-link::after {
             content: '/';
-            margin-left: 2.7rem;
+            margin-left: 2.8rem;
             color: rgba(198, 255, 0, 0.48);
+            font-size: 0.74rem;
         }
 
         .website-marquee-link:hover {
-            color: #C6FF00;
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .website-marquee-logo {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            display: block;
         }
 
         @keyframes websiteMarquee {
@@ -1696,26 +1704,26 @@
             <div class="website-marquee" aria-label="Websites built by Kristina Visaya">
                 <div class="website-marquee-track">
                     <div class="website-marquee-group">
-                        <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">RS Bygg</a>
-                        <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Joraasen BSM</a>
-                        <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Arendal Bilsenter AS</a>
-                        <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Khalifa Management</a>
-                        <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Nourish Me Wholefoods</a>
-                        <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Schedule One</a>
-                        <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Facial Aesthetics</a>
-                        <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Handeland NITO Takstmann</a>
-                        <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link">Fajitas &amp; Margaritas</a>
+                        <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open RS Bygg website"><img src="https://www.rs-bygg.no/favicon-32.png?v=7" alt="RS Bygg logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Joraasen BSM website"><img src="https://www.joraasen-bsm.no/favicon.png" alt="Joraasen BSM logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Arendal Bilsenter AS website"><img src="https://arendal-bilsenter-as.demo-previews.com/favicon.svg" alt="Arendal Bilsenter AS logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Khalifa Management website"><img src="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/favicon.png" alt="Khalifa Management logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Nourish Me Wholefoods website"><img src="https://nourish-me-wholefoods.demo-previews.com/favicon.png" alt="Nourish Me Wholefoods logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Schedule One website"><img src="https://schedule-one.demo-previews.com/favicon.ico" alt="Schedule One logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Facial Aesthetics website"><img src="https://facial-aesthetics.demo-previews.com/favicon-32.png" alt="Facial Aesthetics logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Handeland NITO Takstmann website"><img src="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/favicon.png" alt="Handeland NITO Takstmann logo" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" aria-label="Open Fajitas and Margaritas website"><img src="https://fajitas-margaritas.demo-previews.com/favicon.png" alt="Fajitas and Margaritas logo" class="website-marquee-logo" loading="lazy"></a>
                     </div>
                     <div class="website-marquee-group" aria-hidden="true">
-                        <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">RS Bygg</a>
-                        <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Joraasen BSM</a>
-                        <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Arendal Bilsenter AS</a>
-                        <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Khalifa Management</a>
-                        <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Nourish Me Wholefoods</a>
-                        <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Schedule One</a>
-                        <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Facial Aesthetics</a>
-                        <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Handeland NITO Takstmann</a>
-                        <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1">Fajitas &amp; Margaritas</a>
+                        <a href="https://www.rs-bygg.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open RS Bygg website"><img src="https://www.rs-bygg.no/favicon-32.png?v=7" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://www.joraasen-bsm.no/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Joraasen BSM website"><img src="https://www.joraasen-bsm.no/favicon.png" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://arendal-bilsenter-as.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Arendal Bilsenter AS website"><img src="https://arendal-bilsenter-as.demo-previews.com/favicon.svg" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Khalifa Management website"><img src="https://khalifa-management-bedrifts-rdgiving.demo-previews.com/favicon.png" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://nourish-me-wholefoods.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Nourish Me Wholefoods website"><img src="https://nourish-me-wholefoods.demo-previews.com/favicon.png" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://schedule-one.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Schedule One website"><img src="https://schedule-one.demo-previews.com/favicon.ico" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://facial-aesthetics.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Facial Aesthetics website"><img src="https://facial-aesthetics.demo-previews.com/favicon-32.png" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Handeland NITO Takstmann website"><img src="https://byggmestertakstingenir-handeland-nito-takstmann.demo-previews.com/favicon.png" alt="" class="website-marquee-logo" loading="lazy"></a>
+                        <a href="https://fajitas-margaritas.demo-previews.com/" target="_blank" rel="noopener noreferrer" class="website-marquee-link" tabindex="-1" aria-label="Open Fajitas and Margaritas website"><img src="https://fajitas-margaritas.demo-previews.com/favicon.png" alt="" class="website-marquee-logo" loading="lazy"></a>
                     </div>
                 </div>
             </div>
